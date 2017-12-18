@@ -28,7 +28,7 @@ export const DEV_SERVER = {
 }
 
 const entry = () => {
-  const appPath = [resolve(__dirname, '../src/app')]
+  const appPath = [resolve(__dirname, '../src')]
   const serverPaths = ['react-hot-loader/patch', 'webpack/hot/dev-server', 'webpack-hot-middleware/client']
 
   // To load stylesheets outside of
@@ -125,7 +125,7 @@ const stylesModule = () => {
 
 const output = () => ({
   output: {
-    filename: IS_PROD ? 'app/[name].[chunkhash:10].js' : 'app/[name].js',
+    filename: IS_PROD ? '[name].[chunkhash:10].js' : '[name].js',
     path: resolve(__dirname, '../dist'),
     pathinfo: !IS_PROD,
     publicPath: IS_DEV ? `${DEV_SERVER.host}:${DEV_SERVER.port}/` : ''
@@ -150,7 +150,7 @@ const plugins = () => {
         name: 'manifest', chunks: ['vendor']
       }),
       new HtmlWebpackPlugin({
-        template: resolve(__dirname, '../src/index.html'),
+        template: resolve(__dirname, '../src/public/index.html'),
         inject: 'body'
       }),
       new webpack.DefinePlugin({
@@ -167,7 +167,7 @@ const plugins = () => {
 
 const resolvers = () => ({
   resolve: {
-    modules: [resolve(__dirname, '../src'), 'node_modules']
+    modules: ['node_modules', resolve(__dirname, '../src')]
   }
 })
 

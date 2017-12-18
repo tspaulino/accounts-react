@@ -3,7 +3,12 @@
   "rules": {
     "comma-dangle": "off",
     "semi": ["error", "never"],
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "global-require": "off"
   },
-  "globals": {}
+  "globals": {
+    "document": true,
+    "window": true,
+    "__DEV__": true
+  }
 }
