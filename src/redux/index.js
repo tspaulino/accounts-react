@@ -7,8 +7,11 @@
  */
 
 import { combineReducers } from 'redux'
+import { reducer as form } from 'redux-form'
 
 // Export default reducers that
 // are going to be added on the
 // initial data load.
-export default combineReducers({})
+export default combineReducers({
+  form
+})
