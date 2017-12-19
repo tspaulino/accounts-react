@@ -14,7 +14,7 @@ import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 
 import store from './store'
-import App from './containers/App'
+import App from './components/App'
 
 // Render App
 ReactDOM.render(
@@ -27,8 +27,8 @@ ReactDOM.render(
 // Enable Webpack hot module
 // replacement for React components
 if (module.hot) {
-  module.hot.accept('./containers/App', () => {
-    const NextApp = require('./containers/App').default
+  module.hot.accept('./components/App', () => {
+    const NextApp = require('./components/App').default
 
     ReactDOM.render(
       <AppContainer>

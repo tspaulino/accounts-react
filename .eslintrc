@@ -4,7 +4,10 @@
     "comma-dangle": "off",
     "semi": ["error", "never"],
     "react/jsx-filename-extension": "off",
-    "global-require": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "global-require": "off",
+    "import/no-named-as-default": "off",
+    "jsx-a11y/label-has-for": "off"
   },
   "globals": {
     "document": true,

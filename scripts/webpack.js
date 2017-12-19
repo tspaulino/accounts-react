@@ -119,7 +119,7 @@ const stylesModule = () => {
   const use = IS_PROD ? ExtractTextPlugin.extract({ fallback: 'style-loader', use: loaders }) : loaders
 
   return {
-    module: { rules: [{ test: /\.scss$/, use }] }
+    module: { rules: [{ test: /\.(scss|css)$/, use }] }
   }
 }
 
