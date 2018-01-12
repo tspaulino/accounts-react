@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-export const foo = {}
+export const apiUrl = 'http://localhost:4000'
 
 /**
  * Meta tags
