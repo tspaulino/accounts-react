@@ -40,8 +40,16 @@ Input.defaultProps = {
 }
 
 Input.propTypes = {
-  input: PropTypes.shape({}).isRequired,
-  meta: PropTypes.shape({}).isRequired,
+  input: PropTypes.shape({
+    checked: PropTypes.boolean,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.any,
+  }).isRequired,
+  meta: PropTypes.shape({
+    active: PropTypes.bool,
+    error: PropTypes.array,
+    touched: PropTypes.bool,
+  }).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   type: PropTypes.string.isRequired,

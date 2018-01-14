@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 
-import validate from '../../utils/validate'
-import { signIn as signInValidation } from '../../validation/auth'
-import Input from '../common/Input'
+import { signInValidation } from '../../validation/auth'
+import Input from '../common/forms/Input'
 
 export const SignInForm = ({ handleSubmit, pristine, submitting }) => (
-  <Form>
+  <Form loading={submitting}>
     <Field name="email" component={Input} type="text" label="Email" />
     <Field name="password" component={Input} type="password" label="Password" />
 
@@ -21,6 +20,7 @@ export const SignInForm = ({ handleSubmit, pristine, submitting }) => (
     >
       Submit
     </Button>
+
     <Link to="/auth/sign-up" className="ui button teal">Sign Up</Link>
   </Form>
 )
@@ -31,4 +31,7 @@ SignInForm.propTypes = {
   submitting: PropTypes.bool.isRequired,
 }
 
-export default reduxForm({ form: 'signIn', validate: validate(signInValidation) })(SignInForm)
+export default reduxForm({
+  form: 'signIn',
+  validate: signInValidation
+})(SignInForm)
