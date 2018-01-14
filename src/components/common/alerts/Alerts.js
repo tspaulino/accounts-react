@@ -17,7 +17,7 @@ Alerts.propTypes = {
   actions: PropTypes.shape({
     revokeAlert: PropTypes.func.isRequired,
   }).isRequired,
-  items: PropTypes.shape([]).isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 const mapStateToProps = state => ({ items: state.alerts.items })

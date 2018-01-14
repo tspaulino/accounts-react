@@ -10,17 +10,22 @@ export const EMIT_ALERT = 'EMIT_ALERT'
 export const REVOKE_ALERT = 'REVOKE_ALERT'
 
 let alerts = {
-  EMPTY_FIELDS: 'Please solve the errors bellow',
-  GENERAL_ERROR: 'An error ocurred, please try again later'
+  emptyFields: 'Please solve the errors bellow',
+  generalError: 'An error ocurred, please try again later'
 }
 
-const getAlert = (codeId, type) => {
-  const code = alerts[codeId] ? codeId : 'GENERAL_ERROR'
+const getAlert = (alert, type) => {
+  let { content, code } = alert
+
+  if (!(content && code) && typeof alert === 'string') {
+    code = alerts[alert] ? alert : 'generalError'
+    content = alerts[code]
+  }
 
   return {
     id: uniqueId('alert_'),
     type: isString(type) ? type : 'error',
-    content: alerts[code],
+    content,
     code,
   }
 }
@@ -30,7 +35,7 @@ export const addAlerts = (newAlerts = {}) => {
 }
 
 // Action creators
-export const emitAlert = (code, type) => ({ type: EMIT_ALERT, payload: getAlert(code, type) })
+export const emitAlert = (alert, type) => ({ type: EMIT_ALERT, payload: getAlert(alert, type) })
 export const revokeAlert = id => ({ type: REVOKE_ALERT, payload: { id } })
 
 // Initial state

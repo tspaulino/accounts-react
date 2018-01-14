@@ -21,7 +21,7 @@ class Alert extends Component {
 
   render() {
     const { content, type } = this.props
-    const props = { [type]: type }
+    const props = { [type]: true }
     return (
       <Message {...props}>
         <Icon name="warning" />
