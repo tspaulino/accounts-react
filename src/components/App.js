@@ -2,26 +2,17 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import Helmet from 'react-helmet'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import 'semantic-ui-css/semantic.min.css'
+import './App.scss'
 
-import SignIn from './auth/SignIn'
-import SignUp from './auth/SignUp'
-import NoMatch from './NoMatch'
+import Routes from './Routes'
+import Alerts from './common/alerts/Alerts'
 import { metaTags } from '../config'
 
 const App = ({ store }) => (
   <Provider store={store}>
     <Fragment>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={SignIn} />
-          <Route exact path="/auth/sign-in" component={SignIn} />
-          <Route exact path="/auth/sign-up" component={SignUp} />
-          <Route component={NoMatch} />
-        </Switch>
-      </Router>
-
+      <Alerts />
+      <Routes />
       <Helmet {...metaTags} />
     </Fragment>
   </Provider>
