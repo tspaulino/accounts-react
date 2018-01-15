@@ -9,9 +9,14 @@
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
 
+import auth from './auth'
+import alerts from './alerts'
+
 // Export default reducers that
 // are going to be added on the
 // initial data load.
 export default combineReducers({
-  form
+  form,
+  auth,
+  alerts
 })

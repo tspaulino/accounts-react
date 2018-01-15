@@ -7,8 +7,7 @@ export const signInValidation = validate({
     length: { maximum: 100, minimum: 5 }
   },
   password: {
-    presence: true,
-    length: { minimum: 8 }
+    presence: true
   }
 })
 

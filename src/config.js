@@ -7,6 +7,7 @@
  */
 
 export const apiUrl = 'http://localhost:4000'
+export const appUrl = 'http://localhost:5000'
 
 /**
  * Meta tags
