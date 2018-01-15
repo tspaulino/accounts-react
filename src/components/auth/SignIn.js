@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Segment, Header } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
@@ -11,14 +11,12 @@ export const SignIn = (props) => {
   const handleSubmitFail = () => actions.emitAlert('emptyFields')
 
   return (
-    <Fragment>
-      <Segment stacked>
-        <div className="auth-signin">
-          <Header size="large">Sign In</Header>
-          <SignInForm onSubmit={handleSubmit} onSubmitFail={handleSubmitFail} />
-        </div>
-      </Segment>
-    </Fragment>
+    <Segment stacked>
+      <div className="auth-signin">
+        <Header size="large">Sign In</Header>
+        <SignInForm onSubmit={handleSubmit} onSubmitFail={handleSubmitFail} />
+      </div>
+    </Segment>
   )
 }
 
