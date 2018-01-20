@@ -10,7 +10,7 @@ export const EMIT_ALERT = 'EMIT_ALERT'
 export const REVOKE_ALERT = 'REVOKE_ALERT'
 
 let alerts = {
-  emptyFields: 'Please solve the errors bellow',
+  submitErrors: 'Please solve the errors bellow',
   generalError: 'An error ocurred, please try again later',
 }
 

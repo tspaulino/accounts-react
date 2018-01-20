@@ -1,4 +1,5 @@
 import request from '../utils/request'
+import { appUrl } from '../config'
 
 /**
  * signIn
@@ -35,5 +36,5 @@ export const signUp = data => request({
 export const recoverPassword = data => request({
   method: 'POST',
   url: 'recover-password',
-  data
+  data: { ...data, callbackUrl: appUrl }
 })

@@ -3,7 +3,6 @@ import * as api from '../api/auth'
 import { getUser } from '../api/user'
 import createReducer from '../utils/createReducer'
 import { getValidationErrors, getResponseError } from '../utils/errors'
-import { appUrl } from '../config'
 import { emitAlert } from './alerts'
 import storage from '../utils/storage'
 
@@ -64,28 +63,30 @@ export const signIn = creds => (dispatch) => {
   })
 }
 
-// export const signUp = (user) => {
-//   return (dispatch) => {
-//     dispatch({ type: SIGN_UP_REQUEST })
+export const signUp = user => (dispatch) => {
+  dispatch({ type: SIGN_UP_REQUEST })
 
-//     return api.signUp(user).then(({ data }) => {
-//       setToken(data.token)
+  return api.signUp(user).then(({ data }) => {
+    storage.set('token', data.token)
 
-//       dispatch({
-//         type: SIGN_UP_SUCCESS,
-//         payload: data
-//       })
-//     }).catch(({ data }) => {
-//       dispatch({ type: SIGN_UP_ERROR, payload: data.error })
-//     })
-//   }
-// }
+    dispatch({
+      type: SIGN_UP_SUCCESS,
+      payload: data
+    })
+
+    return dispatch(authenticate())
+  }).catch(({ response }) => {
+    const { errors } = response.data
+    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
+    dispatch({ type: SIGN_UP_ERROR })
+  })
+}
 
 // export const recoverPassword = (email) => {
 //   return (dispatch) => {
 //     dispatch({ type: RECOVER_PASSWORD_REQUEST })
 
-//     return api.recoverPassword({ email, callbackUrl: appUrl }).then(() => {
+//     return api.recoverPassword({ email }).then(() => {
 //       dispatch({
 //         type: RECOVER_PASSWORD_SUCCESS
 //       })
@@ -123,10 +124,17 @@ const actionHandlers = {
   [SIGN_IN_REQUEST]: () => ({
     token: null
   }),
+  [SIGN_UP_REQUEST]: () => ({
+    token: null
+  }),
   [SIGN_IN_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
   }),
+  [SIGN_UP_SUCCESS]: (state, { payload }) => ({
+    token: payload.token,
+  }),
   [SIGN_IN_ERROR]: () => ({}),
+  [SIGN_UP_ERROR]: () => ({}),
   [SIGN_OUT]: () => ({
     token: null,
     status: authStatuses.disconnected,

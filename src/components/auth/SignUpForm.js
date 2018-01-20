@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 
-import { signInValidation } from '../../validation/auth'
+import { signUpValidation } from '../../validation/auth'
 import Input from '../common/forms/Input'
 
-export const SignInForm = ({ handleSubmit, pristine, submitting }) => (
+export const SignUpForm = ({ handleSubmit, pristine, submitting }) => (
   <Form loading={submitting}>
+    <Field name="name" component={Input} type="text" label="Name" />
     <Field name="email" component={Input} type="text" label="Email" />
     <Field name="password" component={Input} type="password" label="Password" />
+    <Field name="confirmPassword" component={Input} type="password" label="Confirm Password" />
 
     <Button
       type="submit"
@@ -21,18 +23,18 @@ export const SignInForm = ({ handleSubmit, pristine, submitting }) => (
       Submit
     </Button>
 
-    <Link to="/sign-up" className="ui button teal">Sign Up</Link>
+    <Link to="/sign-in" className="ui button teal">Sign In</Link>
     <Link to="/recover-password" className="ui button teal">Lost Password?</Link>
   </Form>
 )
 
-SignInForm.propTypes = {
+SignUpForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({
-  form: 'signIn',
-  validate: signInValidation
-})(SignInForm)
+  form: 'signUp',
+  validate: signUpValidation
+})(SignUpForm)

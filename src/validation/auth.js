@@ -2,23 +2,29 @@ import validate from '../utils/validate'
 
 export const signInValidation = validate({
   email: {
-    presence: true,
+    presence: { allowEmpty: false },
     email: true,
-    length: { maximum: 100, minimum: 5 }
   },
   password: {
     presence: true
   }
 })
 
-// export const signUp = {
-//   email: {
-//     presence: true,
-//     email: true,
-//     length: { maximum: 100, minimum: 5 }
-//   },
-//   password: {
-//     presence: true,
-//     length: { minimum: 8 }
-//   }
-// }
+export const signUpValidation = validate({
+  email: {
+    presence: { allowEmpty: false },
+    email: true,
+  },
+  password: {
+    presence: true,
+    length: { minimum: 8 }
+  },
+  name: {
+    presence: true,
+    length: { minimum: 3, maximum: 100 }
+  },
+  confirmPassword: {
+    presence: true,
+    equality: 'password'
+  }
+})
