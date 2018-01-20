@@ -69,6 +69,7 @@ const jsModule = () => ({
           plugins: [
             'transform-runtime',
             'transform-object-rest-spread',
+            'transform-class-properties',
             ...!IS_PROD ? ['transform-react-jsx-source', 'transform-react-jsx-self', 'react-hot-loader/babel'] : []
           ],
         }
@@ -179,7 +180,7 @@ const other = () => ({
 
   bail: IS_PROD,
   cache: !IS_PROD,
-  devtool: IS_PROD ? 'source-map' : 'eval',
+  devtool: IS_PROD ? 'source-map' : 'eval-source-map',
 
   stats: {
     colors: true,
