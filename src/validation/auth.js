@@ -28,3 +28,9 @@ export const signUpValidation = validate({
     equality: 'password'
   }
 })
+
+export const lostPasswordValidation = validate({
+  email: {
+    email: true,
+  },
+})

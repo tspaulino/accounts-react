@@ -22,7 +22,7 @@ export const SignInForm = ({ handleSubmit, pristine, submitting }) => (
     </Button>
 
     <Link to="/sign-up" className="ui button teal">Sign Up</Link>
-    <Link to="/recover-password" className="ui button teal">Lost Password?</Link>
+    <Link to="/lost-password" className="ui button teal">Lost Password?</Link>
   </Form>
 )
 

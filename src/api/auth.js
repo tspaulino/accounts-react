@@ -28,13 +28,13 @@ export const signUp = data => request({
 })
 
 /**
- * recoverPassword
+ * lostPassword
  *
- * Perform a recover password request
+ * Perform a lost password request
  * on the server to reset user password
  */
-export const recoverPassword = data => request({
+export const lostPassword = data => request({
   method: 'POST',
-  url: 'recover-password',
-  data: { ...data, callbackUrl: appUrl }
+  url: 'lost-password',
+  data: { ...data, callbackUrl: `${appUrl}/reset-password` }
 })

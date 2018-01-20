@@ -82,19 +82,24 @@ export const signUp = user => (dispatch) => {
   })
 }
 
-// export const recoverPassword = (email) => {
-//   return (dispatch) => {
-//     dispatch({ type: RECOVER_PASSWORD_REQUEST })
+export const lostPassword = email => (dispatch) => {
+  dispatch({ type: RECOVER_PASSWORD_REQUEST })
 
-//     return api.recoverPassword({ email }).then(() => {
-//       dispatch({
-//         type: RECOVER_PASSWORD_SUCCESS
-//       })
-//     }).catch(({ data }) => {
-//       dispatch({ type: RECOVER_PASSWORD_ERROR, payload: data.error })
-//     })
-//   }
-// }
+  return api.lostPassword({ email }).then(() => {
+    dispatch({
+      type: RECOVER_PASSWORD_SUCCESS
+    })
+
+    dispatch(emitAlert({
+      content: 'Please check your email for further instructions',
+      code: 'checkEmail',
+    }, 'success'))
+  }).catch(({ response }) => {
+    const { errors } = response.data
+    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
+    dispatch({ type: RECOVER_PASSWORD_ERROR })
+  })
+}
 
 export const signOut = () => (dispatch) => {
   storage.destroy()
@@ -124,17 +129,20 @@ const actionHandlers = {
   [SIGN_IN_REQUEST]: () => ({
     token: null
   }),
-  [SIGN_UP_REQUEST]: () => ({
-    token: null
-  }),
+  [SIGN_IN_ERROR]: () => ({}),
   [SIGN_IN_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
+  }),
+  [SIGN_UP_REQUEST]: () => ({
+    token: null
   }),
   [SIGN_UP_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
   }),
-  [SIGN_IN_ERROR]: () => ({}),
   [SIGN_UP_ERROR]: () => ({}),
+  [RECOVER_PASSWORD_REQUEST]: () => ({}),
+  [RECOVER_PASSWORD_SUCCESS]: () => ({}),
+  [RECOVER_PASSWORD_ERROR]: () => ({}),
   [SIGN_OUT]: () => ({
     token: null,
     status: authStatuses.disconnected,

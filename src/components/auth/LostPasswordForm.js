@@ -4,15 +4,12 @@ import { Link } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 
-import { signUpValidation } from '../../validation/auth'
+import { lostPasswordValidation } from '../../validation/auth'
 import Input from '../common/forms/Input'
 
-export const SignUpForm = ({ handleSubmit, pristine, submitting }) => (
+export const LostPasswordForm = ({ handleSubmit, pristine, submitting }) => (
   <Form loading={submitting}>
-    <Field name="name" component={Input} type="text" label="Name" />
     <Field name="email" component={Input} type="text" label="Email" />
-    <Field name="password" component={Input} type="password" label="Password" />
-    <Field name="confirmPassword" component={Input} type="password" label="Confirm Password" />
 
     <Button
       type="submit"
@@ -20,21 +17,21 @@ export const SignUpForm = ({ handleSubmit, pristine, submitting }) => (
       onClick={handleSubmit}
       disabled={pristine || submitting}
     >
-      Submit
+      Send
     </Button>
 
-    <Link to="/sign-in" className="ui button teal">Sign In</Link>
-    <Link to="/lost-password" className="ui button teal">Lost Password?</Link>
+    <Link to="/sign-up" className="ui button teal">Sign Up</Link>
+    <Link to="/sign-In" className="ui button teal">Sign In</Link>
   </Form>
 )
 
-SignUpForm.propTypes = {
+LostPasswordForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({
-  form: 'signUp',
-  validate: signUpValidation
-})(SignUpForm)
+  form: 'lostPassword',
+  validate: lostPasswordValidation
+})(LostPasswordForm)
