@@ -2,7 +2,7 @@
 import * as api from '../api/auth'
 import { getUser } from '../api/user'
 import createReducer from '../utils/createReducer'
-import { getResponseErrors } from '../utils/errors'
+import { getValidationErrors, getResponseError } from '../utils/errors'
 import { appUrl } from '../config'
 import { emitAlert } from './alerts'
 import storage from '../utils/storage'
@@ -38,8 +38,9 @@ export const authenticate = () => (dispatch) => {
       type: AUTHENTICATE_SUCCESS,
       payload: data
     })
-  }).catch(() => {
-    dispatch(emitAlert('notAuthenticated'))
+  }).catch(({ response }) => {
+    const error = getResponseError(response.data)
+    dispatch(emitAlert(error))
     dispatch({ type: AUTHENTICATE_ERROR })
   })
 }
@@ -58,7 +59,7 @@ export const signIn = creds => (dispatch) => {
     return dispatch(authenticate())
   }).catch(({ response }) => {
     const { errors } = response.data
-    getResponseErrors(errors).forEach(error => dispatch(emitAlert(error)))
+    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
     dispatch({ type: SIGN_IN_ERROR })
   })
 }

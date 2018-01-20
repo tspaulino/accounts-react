@@ -7,11 +7,14 @@
  */
 
 /**
- * getResponseErrors
+ * getValidationErrors
  */
-export const getResponseErrors = (errors) => {
+export const getValidationErrors = (errors) => {
   const keys = Object.keys(errors)
   return keys.map(item => ({ content: errors[item].message, code: errors[item].validator }))
 }
 
-export default {}
+/**
+ * getResponseError
+ */
+export const getResponseError = error => ({ content: error.message, code: error.statusCode })
