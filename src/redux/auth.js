@@ -19,6 +19,9 @@ export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
 export const RECOVER_PASSWORD_REQUEST = 'RECOVER_PASSWORD_REQUEST'
 export const RECOVER_PASSWORD_SUCCESS = 'RECOVER_PASSWORD_SUCCESS'
 export const RECOVER_PASSWORD_ERROR = 'RECOVER_PASSWORD_ERROR'
+export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST'
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS'
+export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR'
 export const SIGN_OUT = 'SIGN_OUT'
 
 const authStatuses = {
@@ -86,9 +89,7 @@ export const lostPassword = email => (dispatch) => {
   dispatch({ type: RECOVER_PASSWORD_REQUEST })
 
   return api.lostPassword({ email }).then(() => {
-    dispatch({
-      type: RECOVER_PASSWORD_SUCCESS
-    })
+    dispatch({ type: RECOVER_PASSWORD_SUCCESS })
 
     dispatch(emitAlert({
       content: 'Please check your email for further instructions',
@@ -98,6 +99,27 @@ export const lostPassword = email => (dispatch) => {
     const { errors } = response.data
     getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
     dispatch({ type: RECOVER_PASSWORD_ERROR })
+
+    return Promise.reject()
+  })
+}
+
+export const resetPassword = user => (dispatch) => {
+  dispatch({ type: RESET_PASSWORD_REQUEST })
+
+  return api.resetPassword(user).then(() => {
+    dispatch({ type: RECOVER_PASSWORD_SUCCESS })
+
+    dispatch(emitAlert({
+      content: 'Password reset successfully',
+      code: 'resetPassword'
+    }, 'success'))
+  }).catch(({ response }) => {
+    const { errors } = response.data
+    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
+    dispatch({ type: RESET_PASSWORD_ERROR })
+
+    return Promise.reject()
   })
 }
 
@@ -143,6 +165,9 @@ const actionHandlers = {
   [RECOVER_PASSWORD_REQUEST]: () => ({}),
   [RECOVER_PASSWORD_SUCCESS]: () => ({}),
   [RECOVER_PASSWORD_ERROR]: () => ({}),
+  [RESET_PASSWORD_REQUEST]: () => ({}),
+  [RESET_PASSWORD_SUCCESS]: () => ({}),
+  [RESET_PASSWORD_ERROR]: () => ({}),
   [SIGN_OUT]: () => ({
     token: null,
     status: authStatuses.disconnected,

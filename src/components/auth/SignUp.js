@@ -8,7 +8,9 @@ import SignUpForm from './SignUpForm'
 export const SignUp = (props) => {
   const { actions } = props
   const handleSubmit = data => actions.signUp(data)
-  const handleSubmitFail = () => actions.emitAlert('submitErrors')
+  const handleSubmitFail = (submitError) => {
+    if (submitError) actions.emitAlert('submitErrors')
+  }
 
   return (
     <Segment stacked>

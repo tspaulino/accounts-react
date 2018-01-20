@@ -7,11 +7,12 @@ import LostPasswordForm from './LostPasswordForm'
 
 export const LostPassword = (props) => {
   const { actions } = props
-  const handleSubmit = ({ email }) => {
-    actions.lostPassword(email)
+  const handleSubmit = ({ email }) => actions.lostPassword(email).then(() => {
     actions.resetForm('lostPassword')
+  })
+  const handleSubmitFail = (submitError) => {
+    if (submitError) actions.emitAlert('submitErrors')
   }
-  const handleSubmitFail = () => actions.emitAlert('submitErrors')
 
   return (
     <Segment stacked>

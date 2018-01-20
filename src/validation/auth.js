@@ -34,3 +34,14 @@ export const lostPasswordValidation = validate({
     email: true,
   },
 })
+
+export const resetPasswordValidation = validate({
+  password: {
+    presence: true,
+    length: { minimum: 8 }
+  },
+  confirmPassword: {
+    presence: true,
+    equality: 'password'
+  }
+})
