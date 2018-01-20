@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { apiUrl } from '../config'
+import request from '../utils/request'
 
 /**
  * getUser
@@ -7,7 +6,10 @@ import { apiUrl } from '../config'
  * Perform a get user request
  * on the server to retrieve user data
  */
-export const getUser = () => axios.get(`${apiUrl}/user`)
+export const getUser = () => request({
+  url: 'user',
+  authenticated: true
+})
 
 /**
  * updateUser
@@ -15,7 +17,12 @@ export const getUser = () => axios.get(`${apiUrl}/user`)
  * Perform an update user request
  * on the server to change user data
  */
-export const updateUser = body => axios.post(`${apiUrl}/user`, { ...body })
+export const updateUser = data => request({
+  method: 'POST',
+  url: 'user',
+  data,
+  authenticated: true
+})
 
 /**
  * changePassword
@@ -23,4 +30,9 @@ export const updateUser = body => axios.post(`${apiUrl}/user`, { ...body })
  * Perform an update user request
  * on the server to change user data
  */
-export const changePassword = body => axios.post(`${apiUrl}/user/change-password`, { ...body })
+export const changePassword = data => request({
+  method: 'POST',
+  url: 'user/change-password',
+  data,
+  authenticated: true
+})

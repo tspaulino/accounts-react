@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { apiUrl } from '../config'
+import request from '../utils/request'
 
 /**
  * signIn
@@ -8,7 +7,11 @@ import { apiUrl } from '../config'
  * on the server to retrieve a valid
  * token
  */
-export const signIn = body => axios.post(`${apiUrl}/sign-in`, { ...body })
+export const signIn = data => request({
+  method: 'POST',
+  url: 'sign-in',
+  data
+})
 
 /**
  * signUp
@@ -17,7 +20,11 @@ export const signIn = body => axios.post(`${apiUrl}/sign-in`, { ...body })
  * on the server to retrieve a valid
  * token
  */
-export const signUp = body => axios.post(`${apiUrl}/sign-up`, { ...body })
+export const signUp = data => request({
+  method: 'POST',
+  url: 'sign-up',
+  data
+})
 
 /**
  * recoverPassword
@@ -25,4 +32,8 @@ export const signUp = body => axios.post(`${apiUrl}/sign-up`, { ...body })
  * Perform a recover password request
  * on the server to reset user password
  */
-export const recoverPassword = body => axios.post(`${apiUrl}/recover-password`, { ...body })
+export const recoverPassword = data => request({
+  method: 'POST',
+  url: 'recover-password',
+  data
+})
