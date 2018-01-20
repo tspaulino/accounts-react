@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
+import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import * as authActions from '../../redux/auth'
 import { emitAlert } from '../../redux/alerts'
@@ -11,17 +13,22 @@ const actions = {
   emitAlert
 }
 
-const AuthWrapper = (ComposedComponent) => {
-  class Auth extends Component {
-    componentWillMount() {}
+const AuthHoc = (ComposedComponent) => {
+  const Auth = (props) => {
+    const { auth } = props
+    if (auth.status === 'connected') return <Redirect to="/dashboard" />
 
-    render() {
-      return (
-        <div className="auth">
-          <ComposedComponent {...this.props} />
-        </div>
-      )
-    }
+    return (
+      <div className="auth">
+        <ComposedComponent {...props} />
+      </div>
+    )
+  }
+
+  Auth.propTypes = {
+    auth: PropTypes.shape({
+      status: PropTypes.string.isRequired
+    }).isRequired
   }
 
   const mapStateToProps = ({ auth }) => ({ auth })
@@ -30,4 +37,4 @@ const AuthWrapper = (ComposedComponent) => {
   return connect(mapStateToProps, mapDispatchToProps)(Auth)
 }
 
-export default AuthWrapper
+export default AuthHoc

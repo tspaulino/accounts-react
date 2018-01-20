@@ -11,7 +11,8 @@ export const REVOKE_ALERT = 'REVOKE_ALERT'
 
 let alerts = {
   emptyFields: 'Please solve the errors bellow',
-  generalError: 'An error ocurred, please try again later'
+  generalError: 'An error ocurred, please try again later',
+  notAuthenticated: 'You are not authenticated'
 }
 
 const getAlert = (alert, type) => {
