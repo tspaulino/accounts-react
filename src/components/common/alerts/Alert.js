@@ -20,12 +20,12 @@ class Alert extends Component {
   }
 
   render() {
-    const { content, type } = this.props
+    const { message, type } = this.props
     const props = { [type]: true }
     return (
       <Message {...props}>
         <Icon name="warning" />
-        {content}
+        {message}
       </Message>
     )
   }
@@ -35,7 +35,7 @@ Alert.propTypes = {
   revokeAlert: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired
 }
 
 export default Alert
