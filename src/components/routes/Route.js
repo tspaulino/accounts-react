@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 
 import { authenticate } from '../../redux/auth'
+import { emitAlert } from '../../redux/alerts'
 
 class AppRoute extends Component {
   static propTypes = {
@@ -23,7 +24,9 @@ class AppRoute extends Component {
 
   componentWillMount() {
     const { actions, authenticated } = this.props
-    if (authenticated) actions.authenticate()
+    if (authenticated) {
+      actions.authenticate().catch(() => actions.emitAlert('notAuthenticated'))
+    }
   }
 
   render() {
@@ -46,6 +49,8 @@ class AppRoute extends Component {
 }
 
 const mapStateToProps = ({ auth }) => ({ auth })
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ authenticate }, dispatch) })
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ authenticate, emitAlert }, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRoute)

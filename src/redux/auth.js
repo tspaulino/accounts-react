@@ -2,7 +2,7 @@
 import * as api from '../api/auth'
 import { getUser } from '../api/user'
 import createReducer from '../utils/createReducer'
-import { getValidationErrors, getResponseError } from '../utils/errors'
+import { getValidationErrors, getResponseError, requestErrorHandler } from '../utils/errors'
 import { emitAlert } from './alerts'
 import storage from '../utils/storage'
 
@@ -32,19 +32,29 @@ const authStatuses = {
 }
 
 // Action creators
-export const authenticate = () => (dispatch) => {
+export const authenticate = () => async (dispatch) => {
   dispatch({ type: AUTHENTICATE_REQUEST })
 
-  return getUser().then(({ data }) => {
+  try {
+    const { data } = await getUser()
     dispatch({
       type: AUTHENTICATE_SUCCESS,
       payload: data
     })
-  }).catch(({ response }) => {
-    const error = getResponseError(response.data)
-    dispatch(emitAlert(error))
-    dispatch({ type: AUTHENTICATE_ERROR })
-  })
+  } catch (e) {
+    const error = requestErrorHandler(e)
+    dispatch({ type: AUTHENTICATE_ERROR, payload: error })
+
+    return Promise.reject(error)
+  }
+
+  // .catch(requestErrorHandler((err => console.log('o erro', err))))
+  // .catch((errors) => {
+  //   console.log(errors)
+  //   const error = getResponseError(error.response.data)
+  //   dispatch(emitAlert(error))
+  //   dispatch({ type: AUTHENTICATE_ERROR })
+  // })
 }
 
 export const signIn = creds => (dispatch) => {
@@ -132,21 +142,24 @@ export const signOut = () => (dispatch) => {
 const initialState = {
   token: storage.get('token'),
   status: authStatuses.idle,
-  currentUser: {}
+  currentUser: null,
+  error: null
 }
 
 // Reducer
 const actionHandlers = {
   [AUTHENTICATE_REQUEST]: () => ({
     status: authStatuses.connecting,
-    currentUser: {}
+    currentUser: null,
+    error: null
   }),
   [AUTHENTICATE_SUCCESS]: (state, { payload }) => ({
     currentUser: payload.user,
     status: authStatuses.connected
   }),
-  [AUTHENTICATE_ERROR]: () => ({
+  [AUTHENTICATE_ERROR]: (state, { payload }) => ({
     status: authStatuses.disconnected,
+    error: payload
   }),
   [SIGN_IN_REQUEST]: () => ({
     token: null
@@ -161,13 +174,13 @@ const actionHandlers = {
   [SIGN_UP_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
   }),
-  [SIGN_UP_ERROR]: () => ({}),
-  [RECOVER_PASSWORD_REQUEST]: () => ({}),
-  [RECOVER_PASSWORD_SUCCESS]: () => ({}),
-  [RECOVER_PASSWORD_ERROR]: () => ({}),
-  [RESET_PASSWORD_REQUEST]: () => ({}),
-  [RESET_PASSWORD_SUCCESS]: () => ({}),
-  [RESET_PASSWORD_ERROR]: () => ({}),
+  // [SIGN_UP_ERROR]: () => ({}),
+  // [RECOVER_PASSWORD_REQUEST]: () => ({}),
+  // [RECOVER_PASSWORD_SUCCESS]: () => ({}),
+  // [RECOVER_PASSWORD_ERROR]: () => ({}),
+  // [RESET_PASSWORD_REQUEST]: () => ({}),
+  // [RESET_PASSWORD_SUCCESS]: () => ({}),
+  // [RESET_PASSWORD_ERROR]: () => ({}),
   [SIGN_OUT]: () => ({
     token: null,
     status: authStatuses.disconnected,
