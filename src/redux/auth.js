@@ -2,8 +2,7 @@
 import * as api from '../api/auth'
 import { getUser } from '../api/user'
 import createReducer from '../utils/createReducer'
-import { getValidationErrors, requestErrorHandler } from '../utils/errors'
-import { emitAlert } from './alerts'
+import { requestErrorHandler } from '../utils/errors'
 import storage from '../utils/storage'
 
 // Actions
@@ -41,6 +40,8 @@ export const authenticate = () => async (dispatch) => {
       type: AUTHENTICATE_SUCCESS,
       payload: data
     })
+
+    return true
   } catch (e) {
     const error = requestErrorHandler(e)
     dispatch({ type: AUTHENTICATE_ERROR, payload: error })
@@ -97,6 +98,8 @@ export const lostPassword = email => async (dispatch) => {
   try {
     await api.lostPassword({ email })
     dispatch({ type: LOST_PASSWORD_SUCCESS })
+
+    return true
   } catch (e) {
     const error = requestErrorHandler(e)
     dispatch({ type: LOST_PASSWORD_ERROR, payload: error })
@@ -105,23 +108,20 @@ export const lostPassword = email => async (dispatch) => {
   }
 }
 
-export const resetPassword = user => (dispatch) => {
+export const resetPassword = user => async (dispatch) => {
   dispatch({ type: RESET_PASSWORD_REQUEST })
 
-  return api.resetPassword(user).then(() => {
-    dispatch({ type: LOST_PASSWORD_SUCCESS })
+  try {
+    await api.resetPassword(user)
+    dispatch({ type: RESET_PASSWORD_SUCCESS })
 
-    dispatch(emitAlert({
-      content: 'Password reset successfully',
-      code: 'resetPassword'
-    }, 'success'))
-  }).catch(({ response }) => {
-    const { errors } = response.data
-    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
-    dispatch({ type: RESET_PASSWORD_ERROR })
+    return true
+  } catch (e) {
+    const error = requestErrorHandler(e)
+    dispatch({ type: RESET_PASSWORD_ERROR, payload: error })
 
-    return Promise.reject()
-  })
+    return Promise.reject(error)
+  }
 }
 
 export const signOut = () => (dispatch) => {
@@ -183,9 +183,14 @@ const actionHandlers = {
     error: payload
   }),
 
-  // [RESET_PASSWORD_REQUEST]: () => ({}),
+  [RESET_PASSWORD_REQUEST]: () => ({
+    error: null
+  }),
   // [RESET_PASSWORD_SUCCESS]: () => ({}),
-  // [RESET_PASSWORD_ERROR]: () => ({}),
+  [RESET_PASSWORD_ERROR]: (state, { payload }) => ({
+    error: payload
+  }),
+
   [SIGN_OUT]: () => ({
     token: null,
     status: authStatuses.disconnected,
