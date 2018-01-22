@@ -68,16 +68,13 @@ export const signIn = creds => async (dispatch) => {
 
     return Promise.reject(error)
   }
-
-  //   const { errors } = response.data
-  //   // getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
-  // })
 }
 
-export const signUp = user => (dispatch) => {
+export const signUp = user => async (dispatch) => {
   dispatch({ type: SIGN_UP_REQUEST })
 
-  return api.signUp(user).then(({ data }) => {
+  try {
+    const { data } = await api.signUp(user)
     storage.set('token', data.token)
 
     dispatch({
@@ -86,11 +83,12 @@ export const signUp = user => (dispatch) => {
     })
 
     return dispatch(authenticate())
-  }).catch(({ response }) => {
-    const { errors } = response.data
-    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
-    dispatch({ type: SIGN_UP_ERROR })
-  })
+  } catch (e) {
+    const error = requestErrorHandler(e)
+    dispatch({ type: SIGN_UP_ERROR, payload: error })
+
+    return Promise.reject(error)
+  }
 }
 
 export const lostPassword = email => (dispatch) => {
@@ -172,12 +170,15 @@ const actionHandlers = {
   }),
 
   [SIGN_UP_REQUEST]: () => ({
-    token: null
+    token: null,
+    error: null
   }),
   [SIGN_UP_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
   }),
-  // [SIGN_UP_ERROR]: () => ({}),
+  [SIGN_UP_ERROR]: (state, { payload }) => ({
+    error: payload
+  }),
   // [RECOVER_PASSWORD_REQUEST]: () => ({}),
   // [RECOVER_PASSWORD_SUCCESS]: () => ({}),
   // [RECOVER_PASSWORD_ERROR]: () => ({}),
