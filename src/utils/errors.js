@@ -6,6 +6,8 @@
  * @license MIT
  */
 
+import { SubmissionError } from 'redux-form'
+
 /**
  * getValidationErrors
  */
@@ -32,7 +34,7 @@ const toValidationError = (errors) => {
  */
 export const requestErrorHandler = (reqError) => {
   const error = {
-    type: 'requestError' // requestError, responseError, validationError
+    type: 'request' // request, response, validation
   }
   const { response, request } = reqError
 
@@ -41,10 +43,10 @@ export const requestErrorHandler = (reqError) => {
 
     if (data.errors) {
       error.validation = toValidationError(data.errors)
-      error.type = 'validationError'
+      error.type = 'validation'
     } else {
       error.message = data.message
-      error.type = 'responseError'
+      error.type = 'response'
     }
   } else if (request) {
     error.message = 'Request error'
@@ -53,4 +55,15 @@ export const requestErrorHandler = (reqError) => {
   }
 
   return error
+}
+
+/**
+ * formErrorHandler
+ */
+export const formErrorHandler = (err) => {
+  const error = new SubmissionError({
+    ...(err.type === 'validation' ? err.validation : {}),
+    ...(err.message && { formError: err.message })
+  })
+  return Promise.reject(error)
 }

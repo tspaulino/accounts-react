@@ -2,7 +2,7 @@
 import * as api from '../api/auth'
 import { getUser } from '../api/user'
 import createReducer from '../utils/createReducer'
-import { getValidationErrors, getResponseError, requestErrorHandler } from '../utils/errors'
+import { getValidationErrors, requestErrorHandler } from '../utils/errors'
 import { emitAlert } from './alerts'
 import storage from '../utils/storage'
 
@@ -47,20 +47,13 @@ export const authenticate = () => async (dispatch) => {
 
     return Promise.reject(error)
   }
-
-  // .catch(requestErrorHandler((err => console.log('o erro', err))))
-  // .catch((errors) => {
-  //   console.log(errors)
-  //   const error = getResponseError(error.response.data)
-  //   dispatch(emitAlert(error))
-  //   dispatch({ type: AUTHENTICATE_ERROR })
-  // })
 }
 
-export const signIn = creds => (dispatch) => {
+export const signIn = creds => async (dispatch) => {
   dispatch({ type: SIGN_IN_REQUEST })
 
-  return api.signIn(creds).then(({ data }) => {
+  try {
+    const { data } = await api.signIn(creds)
     storage.set('token', data.token)
 
     dispatch({
@@ -69,11 +62,16 @@ export const signIn = creds => (dispatch) => {
     })
 
     return dispatch(authenticate())
-  }).catch(({ response }) => {
-    const { errors } = response.data
-    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
-    dispatch({ type: SIGN_IN_ERROR })
-  })
+  } catch (e) {
+    const error = requestErrorHandler(e)
+    dispatch({ type: SIGN_IN_ERROR, payload: error })
+
+    return Promise.reject(error)
+  }
+
+  //   const { errors } = response.data
+  //   // getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
+  // })
 }
 
 export const signUp = user => (dispatch) => {
@@ -161,13 +159,18 @@ const actionHandlers = {
     status: authStatuses.disconnected,
     error: payload
   }),
+
   [SIGN_IN_REQUEST]: () => ({
-    token: null
+    token: null,
+    error: null
   }),
-  [SIGN_IN_ERROR]: () => ({}),
+  [SIGN_IN_ERROR]: (state, { payload }) => ({
+    error: payload
+  }),
   [SIGN_IN_SUCCESS]: (state, { payload }) => ({
     token: payload.token,
   }),
+
   [SIGN_UP_REQUEST]: () => ({
     token: null
   }),
