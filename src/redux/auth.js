@@ -16,9 +16,9 @@ export const AUTHENTICATE_ERROR = 'AUTHENTICATE_ERROR'
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST'
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR'
-export const RECOVER_PASSWORD_REQUEST = 'RECOVER_PASSWORD_REQUEST'
-export const RECOVER_PASSWORD_SUCCESS = 'RECOVER_PASSWORD_SUCCESS'
-export const RECOVER_PASSWORD_ERROR = 'RECOVER_PASSWORD_ERROR'
+export const LOST_PASSWORD_REQUEST = 'LOST_PASSWORD_REQUEST'
+export const LOST_PASSWORD_SUCCESS = 'LOST_PASSWORD_SUCCESS'
+export const LOST_PASSWORD_ERROR = 'LOST_PASSWORD_ERROR'
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST'
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS'
 export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR'
@@ -91,30 +91,25 @@ export const signUp = user => async (dispatch) => {
   }
 }
 
-export const lostPassword = email => (dispatch) => {
-  dispatch({ type: RECOVER_PASSWORD_REQUEST })
+export const lostPassword = email => async (dispatch) => {
+  dispatch({ type: LOST_PASSWORD_REQUEST })
 
-  return api.lostPassword({ email }).then(() => {
-    dispatch({ type: RECOVER_PASSWORD_SUCCESS })
+  try {
+    await api.lostPassword({ email })
+    dispatch({ type: LOST_PASSWORD_SUCCESS })
+  } catch (e) {
+    const error = requestErrorHandler(e)
+    dispatch({ type: LOST_PASSWORD_ERROR, payload: error })
 
-    dispatch(emitAlert({
-      content: 'Please check your email for further instructions',
-      code: 'checkEmail',
-    }, 'success'))
-  }).catch(({ response }) => {
-    const { errors } = response.data
-    getValidationErrors(errors).forEach(error => dispatch(emitAlert(error)))
-    dispatch({ type: RECOVER_PASSWORD_ERROR })
-
-    return Promise.reject()
-  })
+    return Promise.reject(error)
+  }
 }
 
 export const resetPassword = user => (dispatch) => {
   dispatch({ type: RESET_PASSWORD_REQUEST })
 
   return api.resetPassword(user).then(() => {
-    dispatch({ type: RECOVER_PASSWORD_SUCCESS })
+    dispatch({ type: LOST_PASSWORD_SUCCESS })
 
     dispatch(emitAlert({
       content: 'Password reset successfully',
@@ -179,9 +174,15 @@ const actionHandlers = {
   [SIGN_UP_ERROR]: (state, { payload }) => ({
     error: payload
   }),
-  // [RECOVER_PASSWORD_REQUEST]: () => ({}),
-  // [RECOVER_PASSWORD_SUCCESS]: () => ({}),
-  // [RECOVER_PASSWORD_ERROR]: () => ({}),
+
+  [LOST_PASSWORD_REQUEST]: () => ({
+    error: null
+  }),
+  // [LOST_PASSWORD_SUCCESS]: () => ({}),
+  [LOST_PASSWORD_ERROR]: (state, { payload }) => ({
+    error: payload
+  }),
+
   // [RESET_PASSWORD_REQUEST]: () => ({}),
   // [RESET_PASSWORD_SUCCESS]: () => ({}),
   // [RESET_PASSWORD_ERROR]: () => ({}),
