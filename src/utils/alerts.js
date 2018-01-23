@@ -8,6 +8,8 @@
 
 import uniqueId from 'lodash/uniqueId'
 import isString from 'lodash/isString'
+import pick from 'lodash/pick'
+import isEmpty from 'lodash/isEmpty'
 
 
 const alerts = {
@@ -19,12 +21,12 @@ const alerts = {
 export default (alert) => {
   const id = uniqueId('alert')
 
-  if (isString(alert)) {
+  if (!alert || isEmpty(alert) || isString(alert)) {
     return {
       id,
       ...(alerts[alert] || alerts.generalError)
     }
   }
 
-  return { id, type: 'error', ...alert }
+  return { id, type: 'error', ...pick(alert, ['message', 'type', 'id']) }
 }

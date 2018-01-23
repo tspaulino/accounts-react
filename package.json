@@ -9,6 +9,7 @@
     "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.1.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -32,6 +33,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^22.1.4",
     "lodash": "^4.17.4",
     "node-sass": "^4.7.2",
     "path": "^0.12.7",
@@ -67,6 +69,8 @@
     "predist": "npm run lint & rimraf dist",
     "dist": "babel-node scripts/dist --env=production",
     "dev": "babel-node scripts/dev --env=development",
-    "lint": "eslint . --cache"
+    "lint": "eslint . --cache",
+    "test": "jest . --verbose --colors --runInBand --forceExit",
+    "test:watch": "npm run test -- --watch "
   }
 }
