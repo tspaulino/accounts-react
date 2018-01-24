@@ -2,7 +2,7 @@ import getAlert from '../../utils/alerts'
 
 describe('Alerts Util', () => {
   describe('#default', () => {
-    it('given an object with message key, should return a formatted alert message', () => {
+    it('given an object with message key, it should return a formatted alert message', () => {
       const alert = getAlert({
         id: 'id',
         message: 'A message'
@@ -15,7 +15,7 @@ describe('Alerts Util', () => {
       })
     })
 
-    it('given an object with message and type keys, should return a formatted alert message', () => {
+    it('given an object with message and type keys, it should return a formatted alert message', () => {
       const alert = getAlert({
         id: 'id',
         message: 'A message',
@@ -29,7 +29,7 @@ describe('Alerts Util', () => {
       })
     })
 
-    it('given an object with extraneous keys, should return a formatted alert message', () => {
+    it('given an object with extraneous keys, it should return a formatted alert message', () => {
       const alert = getAlert({
         id: 'id',
         message: 'A message',
@@ -44,7 +44,7 @@ describe('Alerts Util', () => {
       })
     })
 
-    it('given invalid args, should return a default formatted alert message', () => {
+    it('given invalid args, it should return a default formatted alert message', () => {
       [null, undefined, [], {}, '', 'nothing'].forEach((item) => {
         const alert = getAlert(item)
         expect(alert.message).toEqual('An error ocurred, please try again later')
@@ -52,13 +52,13 @@ describe('Alerts Util', () => {
       })
     })
 
-    it('given no args, should return a default formatted alert message', () => {
+    it('given no args, it should return a default formatted alert message', () => {
       const alert = getAlert()
       expect(alert.message).toEqual('An error ocurred, please try again later')
       expect(alert.type).toEqual('error')
     })
 
-    it('given A valid string key, should return a corresponding formatted alert message', () => {
+    it('given A valid string key, it should return a corresponding formatted alert message', () => {
       const alert = getAlert('fieldErrors')
       expect(alert.message).toEqual('Please solve the errors bellow')
       expect(alert.type).toEqual('error')

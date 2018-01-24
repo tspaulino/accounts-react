@@ -8,7 +8,7 @@ import reducer, {
 describe('Alerts Redux', () => {
   describe('Action Creators', () => {
     describe('#emitAlert', () => {
-      it('given a valid object, should return an action with a formatted alert message', () => {
+      it('should return an action with a formatted alert message', () => {
         const alert = {
           message: 'An error message',
           id: 'id'
