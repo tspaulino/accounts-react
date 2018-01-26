@@ -56,8 +56,8 @@ describe('Alerts Redux', () => {
       })
     })
 
-    describe('#EMIT_ALERT', () => {
-      it('should add a new alert object to items array', () => {
+    describe('#REVOKE_ALERT', () => {
+      it('should remove an alert object from the items array', () => {
         const alertItems = [{
           message: 'An error message',
           id: 'id1',
