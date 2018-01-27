@@ -12,7 +12,9 @@
     "jsx-a11y/anchor-is-valid": "off",
     "global-require": "off",
     "import/no-named-as-default": "off",
-    "jsx-a11y/label-has-for": "off"
+    "jsx-a11y/label-has-for": "off",
+    "brace-style": "off",
+    "no-empty": ["error", { "allowEmptyCatch": true }]
   },
   "globals": {
     "document": true,
