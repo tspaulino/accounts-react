@@ -16,9 +16,7 @@ describe('Alerts Redux', () => {
         const action = emitAlert(alert)
         expect(action.type).toEqual(EMIT_ALERT)
         expect(action.payload).toEqual({
-          id: 'id',
-          message: 'An error message',
-          type: 'error'
+          alert: { type: 'error', ...alert }
         })
       })
     })
@@ -33,7 +31,7 @@ describe('Alerts Redux', () => {
   })
 
   describe('Reducer', () => {
-    it('Initial state values', () => {
+    it('should set initial state values', () => {
       const state = reducer(undefined, {})
       expect(state).toEqual({ items: [] })
     })
@@ -48,7 +46,7 @@ describe('Alerts Redux', () => {
 
         const state = reducer(undefined, {
           type: EMIT_ALERT,
-          payload: alert
+          payload: { alert }
         })
 
         expect(state.items.length).toEqual(1)
