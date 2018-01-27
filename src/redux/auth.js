@@ -44,7 +44,7 @@ export const authenticate = () => async (dispatch) => {
     return true
   } catch (e) {
     const error = requestErrorHandler(e)
-    dispatch({ type: AUTHENTICATE_ERROR, payload: error })
+    dispatch({ type: AUTHENTICATE_ERROR, payload: { error } })
 
     return Promise.reject(error)
   }
@@ -65,7 +65,7 @@ export const signIn = creds => async (dispatch) => {
     return dispatch(authenticate())
   } catch (e) {
     const error = requestErrorHandler(e)
-    dispatch({ type: SIGN_IN_ERROR, payload: error })
+    dispatch({ type: SIGN_IN_ERROR, payload: { error } })
 
     return Promise.reject(error)
   }
@@ -86,7 +86,7 @@ export const signUp = user => async (dispatch) => {
     return dispatch(authenticate())
   } catch (e) {
     const error = requestErrorHandler(e)
-    dispatch({ type: SIGN_UP_ERROR, payload: error })
+    dispatch({ type: SIGN_UP_ERROR, payload: { error } })
 
     return Promise.reject(error)
   }
@@ -102,7 +102,7 @@ export const lostPassword = email => async (dispatch) => {
     return true
   } catch (e) {
     const error = requestErrorHandler(e)
-    dispatch({ type: LOST_PASSWORD_ERROR, payload: error })
+    dispatch({ type: LOST_PASSWORD_ERROR, payload: { error } })
 
     return Promise.reject(error)
   }
@@ -118,15 +118,15 @@ export const resetPassword = user => async (dispatch) => {
     return true
   } catch (e) {
     const error = requestErrorHandler(e)
-    dispatch({ type: RESET_PASSWORD_ERROR, payload: error })
+    dispatch({ type: RESET_PASSWORD_ERROR, payload: { error } })
 
     return Promise.reject(error)
   }
 }
 
-export const signOut = () => (dispatch) => {
+export const signOut = () => {
   storage.destroy()
-  dispatch({ type: SIGN_OUT })
+  return { type: SIGN_OUT }
 }
 
 // Initial Store
@@ -144,51 +144,51 @@ const actionHandlers = {
     currentUser: null,
     error: null
   }),
-  [AUTHENTICATE_SUCCESS]: (state, { payload }) => ({
-    currentUser: payload.user,
+  [AUTHENTICATE_SUCCESS]: (state, { user }) => ({
+    currentUser: user,
     status: authStatuses.connected
   }),
-  [AUTHENTICATE_ERROR]: (state, { payload }) => ({
+  [AUTHENTICATE_ERROR]: (state, { error }) => ({
     status: authStatuses.disconnected,
-    error: payload
+    error
   }),
 
   [SIGN_IN_REQUEST]: () => ({
     token: null,
     error: null
   }),
-  [SIGN_IN_ERROR]: (state, { payload }) => ({
-    error: payload
+  [SIGN_IN_SUCCESS]: (state, { token }) => ({
+    token
   }),
-  [SIGN_IN_SUCCESS]: (state, { payload }) => ({
-    token: payload.token,
+  [SIGN_IN_ERROR]: (state, { error }) => ({
+    error
   }),
 
   [SIGN_UP_REQUEST]: () => ({
     token: null,
     error: null
   }),
-  [SIGN_UP_SUCCESS]: (state, { payload }) => ({
-    token: payload.token,
+  [SIGN_UP_SUCCESS]: (state, { token }) => ({
+    token
   }),
-  [SIGN_UP_ERROR]: (state, { payload }) => ({
-    error: payload
+  [SIGN_UP_ERROR]: (state, { error }) => ({
+    error
   }),
 
   [LOST_PASSWORD_REQUEST]: () => ({
     error: null
   }),
   // [LOST_PASSWORD_SUCCESS]: () => ({}),
-  [LOST_PASSWORD_ERROR]: (state, { payload }) => ({
-    error: payload
+  [LOST_PASSWORD_ERROR]: (state, { error }) => ({
+    error
   }),
 
   [RESET_PASSWORD_REQUEST]: () => ({
     error: null
   }),
   // [RESET_PASSWORD_SUCCESS]: () => ({}),
-  [RESET_PASSWORD_ERROR]: (state, { payload }) => ({
-    error: payload
+  [RESET_PASSWORD_ERROR]: (state, { error }) => ({
+    error
   }),
 
   [SIGN_OUT]: () => ({
