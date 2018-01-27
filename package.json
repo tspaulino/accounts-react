@@ -25,6 +25,9 @@
     "compression": "^1.7.1",
     "connect-history-api-fallback": "^1.5.0",
     "css-loader": "^0.28.7",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.1",
     "eslint": "^4.13.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -33,6 +36,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^22.1.4",
     "lodash": "^4.17.4",
     "nock": "^9.1.6",
@@ -49,6 +53,7 @@
     "react-hot-loader": "^3.1.3",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-test-renderer": "^16.2.0",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
     "redux-logger": "^3.0.6",
@@ -58,6 +63,7 @@
     "sass-loader": "^6.0.6",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1",
+    "sinon": "^4.2.2",
     "store": "^2.0.12",
     "style-loader": "^0.19.1",
     "validate.js": "^0.12.0",
@@ -74,5 +80,14 @@
     "lint": "eslint . --cache",
     "test": "jest . --verbose --colors --runInBand --forceExit",
     "test:watch": "npm run test -- --watch "
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/__test__/setup.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(css|scss)$": "identity-obj-proxy"
+    }
   }
 }

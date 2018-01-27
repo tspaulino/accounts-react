@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Alert /> should render component 1`] = `
+<Message
+  error={true}
+>
+  <Icon
+    as="i"
+    name="warning"
+  />
+  Some error
+</Message>
+`;
+
+exports[`<Alert /> should render component 2`] = `
+<Message
+  error={true}
+>
+  <Icon
+    as="i"
+    name="warning"
+  />
+  Some error
+</Message>
+`;

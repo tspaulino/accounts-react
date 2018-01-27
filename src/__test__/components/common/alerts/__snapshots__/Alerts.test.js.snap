@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Alert /> should render component 1`] = `
+<div
+  className="alerts"
+>
+  <Alert
+    id="id1"
+    key="id1"
+    message="Some error 1"
+    revokeAlert={[Function]}
+    type="error"
+  />
+  <Alert
+    id="id2"
+    key="id2"
+    message="Some error 2"
+    revokeAlert={[Function]}
+    type="error"
+  />
+  <Alert
+    id="id3"
+    key="id3"
+    message="Some error 3"
+    revokeAlert={[Function]}
+    type="error"
+  />
+</div>
+`;
