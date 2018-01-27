@@ -7,11 +7,11 @@
  * @license MIT
  */
 
-export default (initialState, actionHandlers) => (state = initialState, payload) => {
-  const fn = actionHandlers[payload.type]
+export default (initialState, actionHandlers) => (state = initialState, action) => {
+  const fn = actionHandlers[action.type]
 
   // Check if handler exists
   if (!fn) return state
 
-  return { ...state, ...fn(state, payload) }
+  return { ...state, ...fn(state, action.payload) }
 }
