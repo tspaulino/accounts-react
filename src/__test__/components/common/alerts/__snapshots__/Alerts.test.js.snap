@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Alert /> should render component 1`] = `
+exports[`<Alerts /> should match snapshot 1`] = `
 <div
   className="alerts"
 >
