@@ -41,7 +41,6 @@ Input.defaultProps = {
 
 Input.propTypes = {
   input: PropTypes.shape({
-    checked: PropTypes.boolean,
     name: PropTypes.string.isRequired,
     value: PropTypes.any,
   }).isRequired,

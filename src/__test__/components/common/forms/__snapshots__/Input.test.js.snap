@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Input /> should match snapshot 1`] = `
+<FormField>
+  <FormInput
+    as={[Function]}
+    control={[Function]}
+    label="Email"
+    name="email"
+    placeholder="Email"
+    type="text"
+    value=""
+  />
+</FormField>
+`;
