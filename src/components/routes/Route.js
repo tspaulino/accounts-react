@@ -7,14 +7,15 @@ import { Redirect, Route } from 'react-router-dom'
 import { authenticate } from '../../redux/auth'
 import { emitAlert } from '../../redux/alerts'
 
-class AppRoute extends Component {
+export class AppRoute extends Component {
   static propTypes = {
     authenticated: PropTypes.bool,
     auth: PropTypes.shape({
       status: PropTypes.string.isRequired,
     }).isRequired,
     actions: PropTypes.shape({
-      authenticate: PropTypes.func.isRequired
+      authenticate: PropTypes.func.isRequired,
+      emitAlert: PropTypes.func.isRequired
     }).isRequired
   }
 
