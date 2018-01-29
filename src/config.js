@@ -14,9 +14,9 @@ export const appUrl = 'http://localhost:5000'
  * Meta tags
  */
 export const metaTags = {
-  title: 'Flourished',
+  title: 'Accounts',
   titleTemplate: '%s - React App',
-  defaultTitle: 'Flourished',
+  defaultTitle: 'Accounts',
   meta: [
     { name: 'description', content: 'A small React app boilerplate.' }
   ]
